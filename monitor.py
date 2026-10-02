@@ -458,8 +458,8 @@ def main():
     parser.add_argument('--port', type=int, default=8181, help='ODL REST port (default: 8181)')
     parser.add_argument('--user', default='admin', help='Username for authentication (default: admin)')
     parser.add_argument('--password', default='admin', help='Password for authentication (default: admin)')
-    parser.add_argument('-t', '--table', type=int, default=0, help='Table ID to monitor (default: 0)')
-    parser.add_argument('-i', '--interval', type=int, default=5, help='Update interval in seconds (default: 5)')
+    parser.add_argument('-t', '--table', type=int, default=100, help='Table ID to monitor (default: 100)')
+    parser.add_argument('-i', '--interval', type=int, default=1, help='Update interval in seconds (default: 1)')
     
     args = parser.parse_args()
     
