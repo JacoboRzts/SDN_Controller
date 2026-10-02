@@ -17,7 +17,7 @@ spines = nodes[0:2]
 leafs = nodes[2:]
 hosts = [1, 2, 3]
 subnets = hosts
-ports = [2, 3]
+ports = [1, 2]
 
 c = Client(ip=args.controller, default_table=args.table)
 
@@ -52,7 +52,7 @@ for dpid in spines:
                 Match.eth(dst_ip=f"10.0.{subnet}.0/24"),
                 [
                     Instruction.apply([
-                        Action.output(str(subnet + 1)),
+                        Action.output(str(subnet)),
                     ])
                 ]
             ),
@@ -101,20 +101,20 @@ for dpid in leafs:
         )
 
 # Add and extra host (H10) as a test host.
-dpid = nodes[-1]
-host = 4
-c.setFlow(
-    dpid,
-    Flow(
-        f"{names[dpid]}0{host}",
-        f"H{host}",
-        table,
-        100,
-        Match.eth(dst_ip=f"10.0.{int(names[dpid])-2}.{host}/32"),
-        [
-            Instruction.apply([
-                Action.output((host) + 12)
-            ])
-        ]
-    )
-)
+# dpid = nodes[-1]
+# host = 4
+# c.setFlow(
+#     dpid,
+#     Flow(
+#         f"{names[dpid]}0{host}",
+#         f"H{host}",
+#         table,
+#         100,
+#         Match.eth(dst_ip=f"10.0.{int(names[dpid])-2}.{host}/32"),
+#         [
+#             Instruction.apply([
+#                 Action.output((host) + 12)
+#             ])
+#         ]
+#     )
+# )

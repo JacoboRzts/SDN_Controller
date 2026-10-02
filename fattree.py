@@ -35,7 +35,7 @@ for i in range(1, 3):
             match=Match.eth(dst_ip=f"10.0.{i}.0/24"),
             instructions=[
                 Instruction.apply([
-                    Action.output(f"{i+1}")
+                    Action.output(f"{i}")
                  ])
             ]
         )
@@ -43,22 +43,22 @@ for i in range(1, 3):
 
 c.setFlow(aggrs[0], Flow("240", "edge1", table, 100,
     Match.eth(dst_ip="10.0.1.0/24"),
-    [ Instruction.apply([ Action.output("3") ]) ]
+    [ Instruction.apply([ Action.output("2") ]) ]
 ))
 
 c.setFlow(aggrs[0], Flow("210", "core", table, 100,
     Match.eth(dst_ip="10.0.2.0/24"),
-    [ Instruction.apply([ Action.output("2") ]) ]
+    [ Instruction.apply([ Action.output("1") ]) ]
 ))
 
 c.setFlow(aggrs[1], Flow("350", "edge2", table, 100,
     Match.eth(dst_ip="10.0.2.0/24"),
-    [ Instruction.apply([ Action.output("3") ]) ]
+    [ Instruction.apply([ Action.output("2") ]) ]
 ))
 
 c.setFlow(aggrs[1], Flow("310", "core", table, 100,
     Match.eth(dst_ip="10.0.1.0/24"),
-    [ Instruction.apply([ Action.output("2") ]) ]
+    [ Instruction.apply([ Action.output("1") ]) ]
 ))
 
 
@@ -67,7 +67,7 @@ for i, edge in enumerate(edges, start=1):
     # Edge distribution, flows are not in the same switch
     c.setFlow(edge, Flow(f"{i + 4}00", "aggr", table, 90,
         Match.eth(dst_ip="10.0.0.0/16"),
-        [ Instruction.apply([ Action.output(2) ]) ]
+        [ Instruction.apply([ Action.output(1) ]) ]
     ))
     # host distrubution
     for host in range(1, n_host+1):
@@ -76,8 +76,8 @@ for i, edge in enumerate(edges, start=1):
             [ Instruction.apply([ Action.output(host + 12) ]) ]
         ))
 
-for host in range(5, 7):
-    c.setFlow(edges[-1], Flow(f"50{host}", f"host-{host}", table, 100,
-        Match.eth(dst_ip=f"10.0.2.{host}/32"),
-        [ Instruction.apply([ Action.output(host + 12) ]) ]
-    ))
+# for host in range(5, 7):
+#     c.setFlow(edges[-1], Flow(f"50{host}", f"host-{host}", table, 100,
+#         Match.eth(dst_ip=f"10.0.2.{host}/32"),
+#         [ Instruction.apply([ Action.output(host + 12) ]) ]
+#     ))
