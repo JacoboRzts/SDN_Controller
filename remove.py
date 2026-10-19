@@ -1,10 +1,12 @@
-from client import Client
 import argparse
+import sys
 from rich import print
+from client import Client
 
 parser = argparse.ArgumentParser(description='Remove all the flows from the controller')
 parser.add_argument('-c' ,'--controller', default='127.0.0.1', help='ODL Controller IP address, localhost by default.')
 parser.add_argument('-v' ,'--verbose', action='store_true', help="Show more information about the flows removed, false by default.")
+parser.add_argument('-u', '--user', type=str, default="admin", help="User and password to use in connections.")
 args = parser.parse_args()
 
 # Función para obtener el color según el código de estado
@@ -18,10 +20,12 @@ def get_status_color(status_code):
     else:
         return "white"
 
-c = Client(ip=args.controller)
+c = Client(ip=args.controller, auth=(args.user, args.user))
 
 try:
     topology = c.getTopology()
+    if topology == None:
+        sys.exit()
     nodes = c.getNodesDPID(topology)
     total_nodes = len(nodes)
     total_flows_deleted = 0

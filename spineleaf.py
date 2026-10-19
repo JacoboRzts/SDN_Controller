@@ -6,6 +6,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-c' ,'--controller', default='127.0.0.1', help='ODL Controller IP address (default is localhost)')
 parser.add_argument('-t' ,'--table', type=int, default=100, help='Table to upload flows (default: 100)')
 parser.add_argument('-s' ,'--save', action='store_true', help="Save the flows into a file.")
+parser.add_argument('-u', '--user', type=str, default="admin", help="User and password to use in connections.")
 args = parser.parse_args()
 
 nodes = vars.NODES
@@ -19,7 +20,7 @@ hosts = [1, 2, 3]
 subnets = hosts
 ports = [1, 2]
 
-c = Client(ip=args.controller, default_table=args.table)
+c = Client(ip=args.controller, default_table=args.table, auth=(args.user, args.user))
 
 # ARP Flows
 for dpid in arps:
